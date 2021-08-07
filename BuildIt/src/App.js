@@ -1,6 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
+import AppNavigation from './navigations/AppNavigation';
+import AuthNavigation from './navigations/AuthNavigation';
 
 export default function App() {
-  return <View></View>;
+  const signed = false;
+
+  return <AuthNavigation />;
 }
