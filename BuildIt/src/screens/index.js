@@ -1,1 +1,2 @@
-export * from './Login/InitialScreen';
+export * from './Login/LoginScreen';
+export * from './Login/Register';

@@ -1,3 +1,4 @@
 export const ACTION_TYPES = {
-  
-}
+  LOGIN_REQUEST: 'auth.LOGIN_REQUEST',
+  LOGIN_SUCCESS: 'auth.LOGIN_SUCCESS',
+};

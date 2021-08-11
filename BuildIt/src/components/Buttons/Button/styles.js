@@ -3,13 +3,13 @@ import { colors, fonts } from '../../../styles';
 
 export const RButton = styled.View`
   background-color: ${(props) =>
-    props.buttonColor ? props.buttonColor : colors.primary};
+    props.buttonColor ? props.buttonColor : colors.secondary};
   flex-direction: row;
   height: 45px;
   elevation: 4px;
   justify-content: center;
   align-items: center;
-  border-radius: 3px;
+  border-radius: 80px;
   margin: 5px 17px;
 `;
 
