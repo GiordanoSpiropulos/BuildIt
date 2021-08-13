@@ -6,3 +6,10 @@ export function loginRequest(email, password) {
     payload: { email, password },
   };
 }
+
+export function signInRequest(email, password, username) {
+  return {
+    type: ACTION_TYPES.SIGN_IN_REQUEST,
+    payload: { email, password, username },
+  };
+}

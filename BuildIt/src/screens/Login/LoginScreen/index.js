@@ -6,7 +6,6 @@ import {
   Container,
   Button,
   MainLogo,
-  Input,
   FadeInContainer,
   BackgroundGradient,
 } from '../../../components';
@@ -15,6 +14,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { isValidEmailInput, isValidPasswordInput } from '../../../helpers';
 import { useDispatch } from 'react-redux';
 import { loginRequest } from '../../../store/modules/auth/actions';
+import Input from '../../../components/Input';
 
 export function LoginScreen() {
   const navigation = useNavigation();

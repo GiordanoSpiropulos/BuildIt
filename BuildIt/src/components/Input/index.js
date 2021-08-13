@@ -2,7 +2,6 @@ import React, { forwardRef } from 'react';
 import { Container, TextError } from './styles';
 import { TextInput } from 'react-native-paper';
 import { colors, fonts } from '../../styles';
-import { Text } from 'react-native';
 
 const theme = {
   colors: {
@@ -19,28 +18,19 @@ const theme = {
   },
 };
 
-export function Input({
-  style,
-  icon,
-  label,
-  onSubmitEditing,
-  error = '',
-  ...rest
-}) {
-  return (
-    <Container style={style}>
-      <TextInput
-        label={label}
-        mode={'flat'}
-        theme={theme}
-        onSubmitEditing={onSubmitEditing}
-        selectionColor={colors.tertiary}
-        underlineColor={colors.white}
-        style={{ paddingVertical: 0, paddingHorizontal: 0 }}
-        error={error}
-        {...rest}
-      />
-      {error !== '' && <TextError>{error}</TextError>}
-    </Container>
-  );
-}
+const Input = (props, ref) => (
+  <Container style={props.style}>
+    <TextInput
+      mode={'flat'}
+      theme={theme}
+      selectionColor={colors.tertiary}
+      underlineColor={colors.white}
+      style={{ paddingVertical: 0, paddingHorizontal: 0 }}
+      ref={ref}
+      {...props}
+    />
+    {props.error !== '' && <TextError>{props.error}</TextError>}
+  </Container>
+);
+
+export default forwardRef(Input);
