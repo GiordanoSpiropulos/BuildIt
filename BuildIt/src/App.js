@@ -1,9 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import AppNavigation from './navigations/AppNavigation';
 import AuthNavigation from './navigations/AuthNavigation';
 
 export default function App() {
-  const signed = false;
+  const isSigned = useSelector((state) => state.auth.isSigned);
 
-  return <AuthNavigation />;
+  return isSigned ? <AppNavigation /> : <AuthNavigation />;
 }

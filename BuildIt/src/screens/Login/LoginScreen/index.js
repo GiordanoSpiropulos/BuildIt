@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ImageBackground, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { InitialScreenBackGround } from '../../../assets/index';
+import { InitialScreenBackGround } from '../../../assets';
 import {
   Container,
   Button,
@@ -22,8 +22,8 @@ export function LoginScreen() {
 
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
 
   function register() {
     setEmail('');

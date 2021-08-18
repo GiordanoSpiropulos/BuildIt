@@ -10,3 +10,5 @@ export * from './Logo';
 export * from './Animation/FadeInContainer';
 export * from './Header';
 export * from './BackgroundGradient';
+
+export * from './Card/Category';

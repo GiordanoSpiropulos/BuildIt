@@ -1,15 +1,15 @@
 import React from 'react';
-import { Row } from '../StyledComponent/Row';
 import { LogoContainer, AppName, InitialText, LogoImage } from './styles';
 import { Logo } from '../../assets/index';
+import { View } from 'react-native';
 export function MainLogo() {
   return (
-    <Row>
+    <View style={{ flexDirection: 'row' }}>
       <LogoContainer>
         <LogoImage resizeMode="contain" source={Logo} />
         <AppName>Build It</AppName>
         <InitialText>Construa uma vida saudável!</InitialText>
       </LogoContainer>
-    </Row>
+    </View>
   );
 }

@@ -1,4 +1,5 @@
 import { all, takeLatest, put, call } from 'redux-saga/effects';
+import { loginSuccess } from './actions';
 import { ACTION_TYPES } from './actionTypes';
 
 export default all([
@@ -11,7 +12,7 @@ function* loginRequest({ payload }) {
     const { email, password } = payload;
     //chamar api. . .
 
-    console.log(email);
+    yield put(loginSuccess());
   } catch (err) {}
 }
 

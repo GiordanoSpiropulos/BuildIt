@@ -31,7 +31,6 @@ export const InitialText = styled.Text`
 
 export const LoginContainer = styled.View`
   justify-content: center;
-  margin: 0px 30px 20px 30px;
   padding-bottom: 20px;
 `;
 

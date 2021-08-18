@@ -18,7 +18,6 @@ export const TitleHeader = styled.View`
 `;
 
 export const HeaderContainer = styled.View`
-  height: 75px;
   padding: 0 15px;
   width: 100%;
   flex-direction: row;

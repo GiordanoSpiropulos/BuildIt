@@ -4,7 +4,7 @@ import { LoginScreen, RegisterScreen } from '../screens/index';
 
 const Auth = createNativeStackNavigator();
 
-const AuthNavigation = () => {
+export default function AuthNavigation() {
   return (
     <Auth.Navigator
       initialRouteName={'LoginScreen'}
@@ -14,6 +14,4 @@ const AuthNavigation = () => {
       <Auth.Screen name="RegisterScreen" component={RegisterScreen} />
     </Auth.Navigator>
   );
-};
-
-export default AuthNavigation;
+}
