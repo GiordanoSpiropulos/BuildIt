@@ -4,6 +4,7 @@ export * from './StyledComponent/Container';
 
 export * from './Buttons/Button';
 export * from './Buttons/BackButton';
+export * from './Buttons/RoundButton';
 
 export * from './Input';
 export * from './Logo';
@@ -12,3 +13,5 @@ export * from './Header';
 export * from './BackgroundGradient';
 
 export * from './Card/Category';
+export * from './Card/Type';
+export * from './Card/Add';

@@ -8,12 +8,14 @@ export function BackgroundGradient({
   startY = -0.1,
   endX = 0,
   endY = 1,
+  rgbaX = 'rgba(52, 53, 101, 0.2)',
+  rgbaY = 'rgba(52, 53, 101, 0.8)',
 }) {
   return (
     <LinearGradient
       start={{ x: startX, y: startY }}
       end={{ x: endX, y: endY }}
-      colors={['rgba(52, 53, 101, 0.2)', 'rgba(52, 53, 101, 0.8)']}
+      colors={[rgbaX, rgbaY]}
       style={{ flex: 1 }}
     >
       {children}
