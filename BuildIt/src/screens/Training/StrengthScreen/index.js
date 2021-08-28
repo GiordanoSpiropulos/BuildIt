@@ -1,16 +1,46 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { FlatList, ScrollView } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Alert, FlatList, ScrollView } from 'react-native';
 import { Container, Row, TypeCard, AddCard } from '../../../components';
+
+import AlertModal from '../../../components/Modal/AlertModal';
 import { trainType } from '../../../helpers/enum/trainType.enum';
+import { colors } from '../../../styles';
 import { Title, ListContainer } from './styles';
 import { StrengthTrainingList } from './temporaryData';
 
 export function StrengthScreen() {
+  const [idSelected, setIdSelected] = useState(null);
   const navigation = useNavigation();
+  const modalRef = useRef();
+  const modalButtons = [
+    {
+      title: 'Excluir',
+      onPress: () => onModalExclude(),
+      color: colors.error,
+    },
+    {
+      title: 'Editar',
+      onPress: () => onModalEdit(),
+      color: colors.success,
+    },
+  ];
 
   function onPressTrain(id, trainingName) {
     navigation.navigate('ExerciseScreen', { id, trainingName });
+  }
+
+  function onLongPress(id) {
+    setIdSelected(id);
+    modalRef.current.openModal();
+  }
+
+  function onModalExclude() {
+    console.log(`o usuário quer excluir o id ${idSelected}`);
+  }
+
+  function onModalEdit() {
+    console.log('O usuario quer editar');
   }
 
   function onAddNewTrain(id, name) {
@@ -25,6 +55,7 @@ export function StrengthScreen() {
         minDuration={item.minDuration}
         maxDuration={item.maxDuration}
         onPress={() => onPressTrain(item.id, item.trainingName)}
+        onLongPress={() => onLongPress(item.id)}
       />
     );
   }
@@ -35,6 +66,13 @@ export function StrengthScreen() {
       contentContainerStyle={{ paddingBottom: 100 }}
     >
       <Container>
+        <AlertModal
+          ref={modalRef}
+          type={'warning'}
+          // title={'Selecionar'}
+          // text={'Escolha uma ação abaixo'}
+          // buttons={modalButtons}
+        />
         <ListContainer>
           <Row>
             <Title>Peito</Title>

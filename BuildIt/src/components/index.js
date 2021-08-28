@@ -15,3 +15,8 @@ export * from './BackgroundGradient';
 export * from './Card/Category';
 export * from './Card/Type';
 export * from './Card/Add';
+
+export * from './ListItem/ExerciseItem';
+
+export * from './Modal/BaseModal';
+export * from './Modal/AlertModal';

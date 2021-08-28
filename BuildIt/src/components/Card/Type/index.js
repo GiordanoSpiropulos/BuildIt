@@ -1,5 +1,8 @@
 import React from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import {
+  TouchableNativeFeedback,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { Column } from '../../StyledComponent/Column';
 import { Row } from '../../StyledComponent/Row';
 import { CardContainer, Title, TitleContainer, DurationText } from './styles';
@@ -10,10 +13,11 @@ export function TypeCard({
   minDuration,
   maxDuration,
   onPress,
+  onLongPress,
   source,
 }) {
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <TouchableNativeFeedback onPress={onPress} onLongPress={onLongPress}>
       <CardContainer source={source}>
         <Row />
         <TitleContainer>
@@ -27,6 +31,6 @@ export function TypeCard({
           </Row>
         </TitleContainer>
       </CardContainer>
-    </TouchableWithoutFeedback>
+    </TouchableNativeFeedback>
   );
 }

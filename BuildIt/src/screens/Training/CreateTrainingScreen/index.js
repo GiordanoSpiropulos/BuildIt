@@ -7,21 +7,44 @@ import {
   Header,
   RoundButton,
   Row,
+  ExerciseItem,
 } from '../../../components';
 import { colors } from '../../../styles';
 import Input from '../../../components/Input';
 import { Picker } from '@react-native-picker/picker';
-import {
-  FlatList,
-  Text,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { FlatList, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { createTrainingRequest } from '../../../store/modules/createTraining/actions';
+
+const TrainingInput = ({
+  title,
+  onChangeText,
+  error,
+  onBlur,
+  onSubmitEditing,
+  value,
+}) => {
+  return (
+    <Input
+      label={title}
+      onChangeText={onChangeText}
+      error={error}
+      onBlur={onBlur}
+      onSubmitEditing={onSubmitEditing}
+      selectionColor={colors.primary}
+      textColor={colors.primary}
+      underlineColor={colors.primary}
+      placeholderColor={colors.primary}
+      primary={colors.primary}
+      value={value}
+    />
+  );
+};
 
 export function CreateTrainingScreen() {
   const route = useRoute();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const trainTypeId = route.params.id;
   const trainTypeName = route.params.name;
 
@@ -37,11 +60,26 @@ export function CreateTrainingScreen() {
     },
   ];
 
-  const [trainName, setTrainName] = useState('');
+  const [setNumberSets, setSetNumberSets] = useState(1);
+  const [trainName, setTrainName] = useState('Teste');
+  const [trainNameError, setTrainNameError] = useState(null);
   const [selectedItem, setSelectedItem] = useState(teste[0].name);
   const [repNumber, setRepNumber] = useState(1);
   const [exerciseList, setExerciseList] = useState([]);
   const [isNext, setIsNext] = useState(false);
+
+  function onChangeName(value) {
+    setTrainNameError('');
+    setTrainName(value);
+  }
+
+  function onBlurName() {
+    if (trainName) {
+      setTrainNameError('');
+      return;
+    }
+    setTrainNameError('*O nome do treino não pode estar vazio!');
+  }
 
   function onAddPress() {
     const exercise = {
@@ -52,36 +90,34 @@ export function CreateTrainingScreen() {
     setRepNumber(1);
   }
 
-  function renderItem({ item }) {
-    return (
-      <View>
-        <Text>{`${item.exerciseName}  ${item.repetionNumber}x`}</Text>
-      </View>
-    );
+  function onNext() {
+    if (trainNameError === '') {
+      setIsNext(true);
+    } else {
+      onBlurName();
+    }
+  }
+  function onFinishCreating() {
+    dispatch(createTrainingRequest(exerciseList, trainName));
   }
 
-  const TrainingInput = ({
-    title,
-    onChangeText,
-    error,
-    onBlur,
-    onSubmitEditing,
-  }) => {
+  function onRemoveItem(index) {
+    var temporaryList = exerciseList;
+    temporaryList = temporaryList.filter((item, pos) => {
+      return pos !== index;
+    });
+    setExerciseList(temporaryList);
+  }
+
+  function renderItem({ item, index }) {
     return (
-      <Input
-        label={title}
-        onChangeText={onChangeText}
-        error={error}
-        onBlur={onBlur}
-        onSubmitEditing={onSubmitEditing}
-        selectionColor={colors.primary}
-        textColor={colors.primary}
-        underlineColor={colors.primary}
-        placeholderColor={colors.primary}
-        primary={colors.primary}
+      <ExerciseItem
+        exerciseName={item.exerciseName}
+        exerciseRep={item.repetionNumber}
+        onRemoveItem={() => onRemoveItem(index)}
       />
     );
-  };
+  }
 
   return (
     <Container>
@@ -92,7 +128,34 @@ export function CreateTrainingScreen() {
       />
       <View style={{ marginTop: 40 }}>
         {!isNext ? (
-          <TrainingInput title={'Nome do treino'} />
+          <Row>
+            <Column>
+              <TrainingInput
+                title={'Nome do treino'}
+                onChangeText={(value) => onChangeName(value)}
+                onBlur={() => onBlurName()}
+                error={trainNameError}
+                value={trainName}
+              />
+            </Column>
+            <Column>
+              <Picker
+                selectedValue={setNumberSets}
+                onValueChange={(itemValue) => setSetNumberSets(itemValue)}
+              >
+                {[...Array(3)].map((item, index) => {
+                  var number = index + 1;
+                  return (
+                    <Picker.Item
+                      style={{ flex: 1 }}
+                      label={number.toString()}
+                      value={index}
+                    />
+                  );
+                })}
+              </Picker>
+            </Column>
+          </Row>
         ) : (
           <>
             <Row>
@@ -129,10 +192,12 @@ export function CreateTrainingScreen() {
               </Column>
               <RoundButton onPress={onAddPress} />
             </Row>
+
             <FlatList
               style={{ height: '70%' }}
               data={exerciseList}
               renderItem={renderItem}
+              showsVerticalScrollIndicator={false}
             />
           </>
         )}
@@ -140,7 +205,8 @@ export function CreateTrainingScreen() {
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
         <Button
           title={!isNext ? 'Continuar' : 'Finalizar'}
-          onPress={() => setIsNext(true)}
+          onPress={() => (!isNext ? onNext() : onFinishCreating())}
+          disabled={!isNext ? false : exerciseList.length <= 0}
         />
       </View>
     </Container>
