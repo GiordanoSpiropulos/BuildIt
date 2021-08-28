@@ -68,10 +68,10 @@ export function StrengthScreen() {
       <Container>
         <AlertModal
           ref={modalRef}
-          type={'warning'}
-          // title={'Selecionar'}
-          // text={'Escolha uma ação abaixo'}
-          // buttons={modalButtons}
+          type={'confirm'}
+          title={'Selecionar'}
+          text={'Escolha uma ação abaixo'}
+          buttons={modalButtons}
         />
         <ListContainer>
           <Row>
