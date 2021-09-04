@@ -8,3 +8,9 @@ export const AlertTitle = styled.Text`
 export const AlertText = styled.Text`
   font-size: 18;
 `;
+
+export const AlertTextContainer = styled.View`
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+`;

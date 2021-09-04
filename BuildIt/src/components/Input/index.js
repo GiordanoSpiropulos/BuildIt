@@ -2,16 +2,18 @@ import React, { forwardRef } from 'react';
 import { Container, TextError } from './styles';
 import { TextInput } from 'react-native-paper';
 import { colors, fonts } from '../../styles';
+import { StyleSheet } from 'react-native';
 
 const Input = (props, ref) => {
-  const theme = {
+  let selectionColor = props.selectionColor || colors.tertiary;
+  let underlineColor = props.underlineColor || colors.white;
+
+  let theme = {
     colors: {
-      text: props.textColor ? props.textColor : colors.tertiary,
-      placeholder: props.placeholderColor
-        ? props.placeholderColor
-        : colors.white,
+      text: colors.tertiary,
+      placeholder: colors.white,
       error: 'red',
-      primary: props.primaryColor ? props.primaryColor : colors.tertiary,
+      primary: colors.tertiary,
       background: 'transparent',
     },
     fonts: {
@@ -21,17 +23,21 @@ const Input = (props, ref) => {
     },
   };
 
+  if (props.customTheme === 'primary') {
+    theme.colors.text = colors.primary;
+    theme.colors.primary = colors.primary;
+    theme.colors.placeholder = colors.primary;
+    selectionColor = colors.primary;
+    underlineColor = colors.primary;
+  }
+
   return (
-    <Container style={props.style}>
+    <Container style={props.style || defaultStyle.container}>
       <TextInput
         mode={'flat'}
         theme={theme}
-        selectionColor={
-          props.selectionColor ? props.selectionColor : colors.tertiary
-        }
-        underlineColor={
-          props.underlineColor ? props.underlineColor : colors.white
-        }
+        selectionColor={selectionColor}
+        underlineColor={underlineColor}
         style={{ paddingVertical: 0, paddingHorizontal: 0 }}
         ref={ref}
         {...props}
@@ -40,5 +46,11 @@ const Input = (props, ref) => {
     </Container>
   );
 };
+
+const defaultStyle = StyleSheet.create({
+  container: {
+    marginBottom: 10,
+  },
+});
 
 export default forwardRef(Input);

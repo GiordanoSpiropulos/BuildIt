@@ -5,3 +5,9 @@ export * from './Training/CategoryScreen';
 export * from './Training/StrengthScreen';
 export * from './Training/ExerciseScreen';
 export * from './Training/CreateTrainingScreen';
+
+export * from './Config/ConfigScreen';
+export * from './Config/MyProfileScreen';
+export * from './Config/ChangeRegisterScreen';
+
+export * from './Config/ChangeRegisterScreen/PasswordScreen';

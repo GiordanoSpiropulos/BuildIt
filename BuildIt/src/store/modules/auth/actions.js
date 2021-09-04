@@ -18,3 +18,14 @@ export function signInRequest(email, password, username) {
     payload: { email, password, username },
   };
 }
+
+export function requestChangePassword(password) {
+  return {
+    type: ACTION_TYPES.CHANGE_PASSWORD_REQUEST,
+    payload: { password },
+  };
+}
+
+export function signOut() {
+  return { type: ACTION_TYPES.SIGN_OUT };
+}

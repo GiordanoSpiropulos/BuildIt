@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { View } from 'react-native';
 import BaseModal from '../BaseModal';
-import { AlertTitle, AlertText } from './styles';
+import { AlertTitle, AlertText, AlertTextContainer } from './styles';
 
 function getAlertModalTitle(type) {
   switch (type) {
@@ -11,13 +11,14 @@ function getAlertModalTitle(type) {
       return 'Ooops';
     case 'info':
       return 'Info';
+    case 'warning':
+      return 'Alerta';
     case 'confirm':
       return 'Confirmação';
   }
 }
 
 const AlertModal = (props, ref) => {
-  console.log(props.buttons);
   return (
     <BaseModal {...props} ref={ref} type={props.type}>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -28,7 +29,9 @@ const AlertModal = (props, ref) => {
             ? getAlertModalTitle(props.type)
             : null}
         </AlertTitle>
-        <AlertText>{props.text && props.text}</AlertText>
+        <AlertTextContainer>
+          <AlertText>{props.text && props.text}</AlertText>
+        </AlertTextContainer>
       </View>
     </BaseModal>
   );

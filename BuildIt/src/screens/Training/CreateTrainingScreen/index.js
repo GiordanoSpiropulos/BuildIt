@@ -9,37 +9,11 @@ import {
   Row,
   ExerciseItem,
 } from '../../../components';
-import { colors } from '../../../styles';
 import Input from '../../../components/Input';
 import { Picker } from '@react-native-picker/picker';
 import { FlatList, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { createTrainingRequest } from '../../../store/modules/createTraining/actions';
-
-const TrainingInput = ({
-  title,
-  onChangeText,
-  error,
-  onBlur,
-  onSubmitEditing,
-  value,
-}) => {
-  return (
-    <Input
-      label={title}
-      onChangeText={onChangeText}
-      error={error}
-      onBlur={onBlur}
-      onSubmitEditing={onSubmitEditing}
-      selectionColor={colors.primary}
-      textColor={colors.primary}
-      underlineColor={colors.primary}
-      placeholderColor={colors.primary}
-      primary={colors.primary}
-      value={value}
-    />
-  );
-};
 
 export function CreateTrainingScreen() {
   const route = useRoute();
@@ -61,7 +35,7 @@ export function CreateTrainingScreen() {
   ];
 
   const [setNumberSets, setSetNumberSets] = useState(1);
-  const [trainName, setTrainName] = useState('Teste');
+  const [trainName, setTrainName] = useState('');
   const [trainNameError, setTrainNameError] = useState(null);
   const [selectedItem, setSelectedItem] = useState(teste[0].name);
   const [repNumber, setRepNumber] = useState(1);
@@ -128,17 +102,19 @@ export function CreateTrainingScreen() {
       />
       <View style={{ marginTop: 40 }}>
         {!isNext ? (
-          <Row>
-            <Column>
-              <TrainingInput
-                title={'Nome do treino'}
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flex: 1 }}>
+              <Input
+                customTheme={'primary'}
+                label={'Nome do treino'}
                 onChangeText={(value) => onChangeName(value)}
                 onBlur={() => onBlurName()}
                 error={trainNameError}
                 value={trainName}
               />
-            </Column>
-            <Column>
+            </View>
+
+            <View style={{ flex: 1 }}>
               <Picker
                 selectedValue={setNumberSets}
                 onValueChange={(itemValue) => setSetNumberSets(itemValue)}
@@ -154,8 +130,8 @@ export function CreateTrainingScreen() {
                   );
                 })}
               </Picker>
-            </Column>
-          </Row>
+            </View>
+          </View>
         ) : (
           <>
             <Row>

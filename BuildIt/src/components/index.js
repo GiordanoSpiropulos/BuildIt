@@ -17,6 +17,7 @@ export * from './Card/Type';
 export * from './Card/Add';
 
 export * from './ListItem/ExerciseItem';
+export * from './ListItem/ConfigItem';
 
 export * from './Modal/BaseModal';
 export * from './Modal/AlertModal';

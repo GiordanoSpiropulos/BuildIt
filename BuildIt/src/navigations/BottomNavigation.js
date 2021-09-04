@@ -1,8 +1,10 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TrainingNavigation from './TrainingNavigation';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import FasIcon from 'react-native-vector-icons/FontAwesome5';
+import MaterialCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors, tabBarStyle } from '../styles';
+import ConfigNavigation from './ConfigNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +24,7 @@ export default function BottomNavigation() {
         component={TrainingNavigation}
         options={{
           tabBarIcon: ({ color }) => (
-            <Icon name="home" color={color} size={30} />
+            <MaterialCIcon name="arm-flex" color={color} size={36} />
           ),
         }}
       />
@@ -34,16 +36,16 @@ export default function BottomNavigation() {
             <Icon name="home" color={color} size={30} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
-        name="Perfil"
-        component={TrainingNavigation}
+        name="Opções"
+        component={ConfigNavigation}
         options={{
           tabBarIcon: ({ color }) => (
-            <Icon name="user" color={color} size={30} />
+            <FasIcon name="cog" color={color} size={30} />
           ),
         }}
-      /> */}
+      />
     </Tab.Navigator>
   );
 }

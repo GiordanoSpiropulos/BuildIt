@@ -86,6 +86,8 @@ export function RegisterScreen() {
   function onBlurConfirmPassword() {
     if (password === confirmPassword) {
       setConfirmPasswordError(isValidPasswordInput(confirmPassword));
+    } else {
+      setConfirmPasswordError('*As senhas devem ser iguais!');
     }
   }
 
