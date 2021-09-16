@@ -1,5 +1,6 @@
 import React from 'react';
-import { TouchableNativeFeedback } from 'react-native';
+import { ActivityIndicator, TouchableNativeFeedback } from 'react-native';
+import { colors } from '../../../styles';
 import { ButtonTitle, RButton } from './styles';
 
 export function Button({
@@ -15,9 +16,13 @@ export function Button({
   return (
     <TouchableNativeFeedback disabled={disabled} onPress={onPress}>
       <RButton buttonColor={buttonColor}>
-        <ButtonTitle textColor={textColor} fontFamily={fontFamily}>
-          {title}
-        </ButtonTitle>
+        {!loading ? (
+          <ButtonTitle textColor={textColor} fontFamily={fontFamily}>
+            {title}
+          </ButtonTitle>
+        ) : (
+          <ActivityIndicator size={'small'} color={colors.white} />
+        )}
       </RButton>
     </TouchableNativeFeedback>
   );

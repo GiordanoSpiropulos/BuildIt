@@ -6,16 +6,29 @@ export function loginRequest(email, password) {
     payload: { email, password },
   };
 }
-export function loginSuccess() {
+export function loginSuccess(token, refresh) {
   return {
     type: ACTION_TYPES.LOGIN_SUCCESS,
+    payload: { token, refresh },
   };
 }
 
-export function signInRequest(email, password, username) {
+export function loginFailed() {
   return {
-    type: ACTION_TYPES.SIGN_IN_REQUEST,
+    type: ACTION_TYPES.LOGIN_FAILED,
+  };
+}
+
+export function signUpRequest(email, password, username) {
+  return {
+    type: ACTION_TYPES.SIGN_UP_REQUEST,
     payload: { email, password, username },
+  };
+}
+
+export function signUpFailed() {
+  return {
+    type: ACTION_TYPES.SIGN_UP_FAILED,
   };
 }
 

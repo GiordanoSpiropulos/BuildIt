@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { createRef, useRef, useState } from 'react';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
+import React, { createRef, useEffect, useRef, useState } from 'react';
 import { ImageBackground } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
@@ -17,12 +17,16 @@ import {
   isValidUsernameInput,
 } from '../../../helpers';
 import Input from '../../../components/Input';
-import { useDispatch } from 'react-redux';
-import { signInRequest } from '../../../store/modules/auth/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { signUpRequest } from '../../../store/modules/auth/actions';
+import { setArrayMessage } from '../../../store/modules/validator/actions';
 
 export function RegisterScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const errorMessages = useSelector((state) => state.validator.messageArray);
+  const loading = useSelector((state) => state.auth.loading);
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -30,21 +34,49 @@ export function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [usernameError, setUsernameError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [confirmEmailError, setConfirmEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [usernameError, setUsernameError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [confirmEmailError, setConfirmEmailError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
   const refEmail = useRef(null);
   const refConfirmEmail = useRef(null);
   const refPassword = useRef(null);
   const refConfirmPassword = useRef(null);
 
+  useEffect(() => {
+    errorMessages.forEach((item) => {
+      if (item.includes('email')) setEmailError(item);
+      else if (item.includes('username')) setUsernameError(item);
+    });
+  }, [errorMessages]);
+
+  useEffect(() => {
+    resetState();
+  }, [isFocused]);
+
+  function resetState() {
+    setUsername('');
+    setEmail('');
+    setConfirmEmail('');
+    setPassword('');
+    setConfirmPassword('');
+
+    setUsernameError(null);
+    setEmailError(null);
+    setConfirmEmailError(null);
+    setPasswordError(null);
+    setConfirmPasswordError(null);
+
+    dispatch(setArrayMessage([]));
+  }
+
   function onChangeUsername(username) {
     setUsername(username);
     setUsernameError('');
   }
+
   function onBlurUsername() {
     setUsernameError(isValidUsernameInput(username));
   }
@@ -101,18 +133,14 @@ export function RegisterScreen() {
 
   function onSignUp() {
     if (
-      username !== '' &&
-      email !== '' &&
-      confirmEmail !== '' &&
-      password !== '' &&
-      confirmPassword !== '' &&
       usernameError === '' &&
       emailError === '' &&
       confirmEmailError === '' &&
       passwordError === '' &&
       confirmPasswordError === ''
     ) {
-      dispatch(signInRequest(email, password, username));
+      dispatch(setArrayMessage([]));
+      dispatch(signUpRequest(email, password, username));
     } else isEveryInputValid();
   }
 
@@ -169,7 +197,11 @@ export function RegisterScreen() {
                 secureTextEntry
               />
             </Form>
-            <Button title={'Cadastrar-se'} onPress={onSignUp} />
+            <Button
+              title={'Cadastrar-se'}
+              loading={loading}
+              onPress={onSignUp}
+            />
           </KeyboardAwareScrollView>
         </Container>
       </BackgroundGradient>

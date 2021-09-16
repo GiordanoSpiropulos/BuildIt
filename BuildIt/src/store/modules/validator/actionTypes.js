@@ -1,0 +1,4 @@
+export const ACTION_TYPES = {
+  SET_ERROR_MESSAGE: 'validator.SET_ERROR_MESSAGE',
+  SET_ARRAY_MESSAGE: 'validator.SET_ARRAY_MESSAGE',
+};

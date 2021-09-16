@@ -49,7 +49,7 @@ const Input = (props, ref) => {
 
 const defaultStyle = StyleSheet.create({
   container: {
-    marginBottom: 10,
+    marginBottom: 0,
   },
 });
 
