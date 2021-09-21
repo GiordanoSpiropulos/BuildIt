@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { all, takeLatest, put, call } from 'redux-saga/effects';
 import { capitalize } from '../../../helpers/helper';
 import api from '../../../services/api';
 import { API_ROUTES } from '../../../services/apiRoutes';
 import { setArrayMessage, setErrorMessage } from '../validator/actions';
 import { loginFailed, loginSuccess, signUpFailed } from './actions';
+import jwt_decode from 'jwt-decode';
 import { ACTION_TYPES } from './actionTypes';
 
 export default all([
@@ -25,12 +25,14 @@ function* loginRequest({ payload }) {
     });
 
     const { refresh, access } = response.data;
+    const { user_id } = jwt_decode(access);
 
-    yield put(loginSuccess(access, refresh));
+    yield put(loginSuccess(access, refresh, user_id));
   } catch (err) {
     const errorMessage = err?.response?.data?.detail
       ? err?.response?.data?.detail
       : 'Erro na Autenticação';
+    console.log('Erro na Autenticação:', err);
     yield put(loginFailed());
     yield put(setErrorMessage(errorMessage));
   }
@@ -54,8 +56,9 @@ function* signUpRequest({ payload }) {
     });
 
     const { refresh, access } = response.data;
+    const { user_id } = jwt_decode(access);
 
-    yield put(loginSuccess(access, refresh));
+    yield put(loginSuccess(access, refresh, user_id));
   } catch (err) {
     let errorEmail = [];
     if (err.response?.data?.email)

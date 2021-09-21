@@ -25,7 +25,11 @@ export function TypeCard({
             <Column>
               <Title>{title}</Title>
               {type == 'workout' && (
-                <DurationText>{`${minDuration}min - ${maxDuration}min`}</DurationText>
+                <>
+                  {minDuration && maxDuration && (
+                    <DurationText>{`${minDuration}min - ${maxDuration}min`}</DurationText>
+                  )}
+                </>
               )}
             </Column>
           </Row>

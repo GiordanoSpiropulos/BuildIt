@@ -46,6 +46,10 @@ const BaseModal = (props, ref) => {
     closeModal: () => {
       close();
     },
+    onCustomClose: (onCustomClose) => {
+      onCustomClose();
+      close();
+    },
   }));
 
   return (
@@ -100,7 +104,11 @@ const BaseModal = (props, ref) => {
             <Button
               title={'Fechar'}
               buttonColor={props.type && getModalType(props.type)}
-              onPress={() => ref.current.closeModal()}
+              onPress={() =>
+                props.onCustomClose
+                  ? ref.current.onCustomClose(props.onCustomClose)
+                  : ref.current.closeModal()
+              }
             />
           </ButtonContainer>
         </InnerContainer>

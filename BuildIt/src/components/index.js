@@ -21,3 +21,5 @@ export * from './ListItem/ConfigItem';
 
 export * from './Modal/BaseModal';
 export * from './Modal/AlertModal';
+
+export * from './Loading';

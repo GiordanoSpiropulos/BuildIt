@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   isSigned: false,
   token: '',
   refreshToken: '',
+  id: 0,
 };
 
 export default function auth(state = INITIAL_STATE, action) {
@@ -19,7 +20,9 @@ export default function auth(state = INITIAL_STATE, action) {
       case ACTION_TYPES.LOGIN_SUCCESS:
         draft.loading = false;
         draft.isSigned = true;
-        draft.token = payload;
+        draft.token = payload.token;
+        draft.refreshToken = payload.refreshToken;
+        draft.id = payload.id;
         break;
       case ACTION_TYPES.LOGIN_FAILED:
         draft.loading = false;
@@ -34,6 +37,7 @@ export default function auth(state = INITIAL_STATE, action) {
         draft.isSigned = false;
         draft.token = '';
         draft.refreshToken = '';
+        draft.id = 0;
         break;
     }
   });
