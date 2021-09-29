@@ -28,6 +28,7 @@ function* loginRequest({ payload }) {
     const { user_id } = jwt_decode(access);
 
     yield put(loginSuccess(access, refresh, user_id));
+    api.defaults.headers.Authorization = `Bearer ${access}`;
   } catch (err) {
     const errorMessage = err?.response?.data?.detail
       ? err?.response?.data?.detail
@@ -57,6 +58,8 @@ function* signUpRequest({ payload }) {
 
     const { refresh, access } = response.data;
     const { user_id } = jwt_decode(access);
+
+    api.defaults.headers.Authorization = `Bearer ${access}`;
 
     yield put(loginSuccess(access, refresh, user_id));
   } catch (err) {

@@ -4,6 +4,7 @@ import {
   CategoryScreen,
   CreateTrainingScreen,
   ExerciseScreen,
+  SelectExerciseScreen,
   StrengthScreen,
 } from '../screens';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
@@ -34,6 +35,10 @@ export default function TrainingNavigation({ navigation, route }) {
       <Training.Screen
         name={'CreateTrainingScreen'}
         component={CreateTrainingScreen}
+      />
+      <Training.Screen
+        name="SelectExerciseScreen"
+        component={SelectExerciseScreen}
       />
     </Training.Navigator>
   );

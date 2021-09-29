@@ -38,6 +38,7 @@ const Input = (props, ref) => {
         theme={theme}
         selectionColor={selectionColor}
         underlineColor={underlineColor}
+        maxLength={props.maxLength || 255}
         style={{ paddingVertical: 0, paddingHorizontal: 0 }}
         ref={ref}
         {...props}

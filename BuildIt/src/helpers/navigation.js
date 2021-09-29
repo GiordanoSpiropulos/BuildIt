@@ -1,4 +1,8 @@
-const routeTrainingNavigation = ['ExerciseScreen', 'CreateTrainingScreen'];
+const routeTrainingNavigation = [
+  'ExerciseScreen',
+  'CreateTrainingScreen',
+  'SelectExerciseScreen',
+];
 
 const routeConfigNavigation = [
   'MyProfileScreen',

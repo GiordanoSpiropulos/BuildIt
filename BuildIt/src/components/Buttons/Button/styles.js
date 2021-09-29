@@ -11,6 +11,7 @@ export const RButton = styled.View`
   align-items: center;
   border-radius: 80px;
   margin: 5px 17px;
+  overflow: hidden;
 `;
 
 export const ButtonTitle = styled.Text`

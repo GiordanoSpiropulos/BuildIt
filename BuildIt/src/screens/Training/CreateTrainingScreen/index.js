@@ -2,42 +2,49 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import {
   Button,
-  Column,
   Container,
   Header,
-  RoundButton,
-  Row,
-  ExerciseItem,
+  AvaliableExercise,
   Loading,
+  ExerciseItem,
 } from '../../../components';
 import Input from '../../../components/Input';
-import { Picker } from '@react-native-picker/picker';
 import { FlatList, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { createTraining, getExerciseList, getTrainingById } from './services';
+import {
+  createTraining,
+  getExerciseList,
+  getTrainingById,
+  updateTrainingById,
+} from './services';
 import AlertModal from '../../../components/Modal/AlertModal';
-
 export function CreateTrainingScreen() {
   const route = useRoute();
   const navigation = useNavigation();
 
-  const idTraining = route.params.id;
-  const trainTypeId = route.params.trainType;
-  const trainTypeName = route.params.name;
-  const isEdit = route.params.isEdit;
-
   const idUser = useSelector((state) => state.auth.id);
 
+  const [idTraining] = useState(route.params.id);
+  const [trainTypeId] = useState(route.params.trainType);
+  const [trainTypeName] = useState(route.params.name);
+  const [isEdit] = useState(route.params.isEdit);
+
   const [loading, setLoading] = useState(true);
+  const [loadingEdit, setLoadingEdit] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
+
   const [avaliabeExercise, setAvaliableExercise] = useState([]);
-  const [setNumberSets, setSetNumberSets] = useState(1);
-  const [trainName, setTrainName] = useState('');
+
+  const [numberSets, setNumberSets] = useState('10');
+  const [numberSetsError, setNumberSetsError] = useState(null);
+
+  const [trainName, setTrainName] = useState('AAA');
   const [trainNameError, setTrainNameError] = useState(null);
-  const [selectedItem, setSelectedItem] = useState([]);
-  const [repNumber, setRepNumber] = useState(1);
+
   const [exerciseList, setExerciseList] = useState([]);
+
   const [isNext, setIsNext] = useState(false);
+  const [isViewSelected, setIsViewSelected] = useState(false);
   const [modalError, setModalError] = useState('');
 
   const modalSuccessref = useRef();
@@ -47,18 +54,30 @@ export function CreateTrainingScreen() {
     _getExerciseList();
     if (isEdit) _getTrainInfo();
   }, []);
+  useEffect(() => {
+    if (route.params?.exercise) {
+      var _exercise = exerciseList;
+      _exercise.push(route.params.exercise);
+      setExerciseList(_exercise);
+    }
+  }, [route.params?.exercise]);
 
   function _getExerciseList() {
     getExerciseList().then((res) => {
       setAvaliableExercise(res.data);
-      setSelectedItem(res.data[0]);
       setLoading(false);
     });
   }
 
   function _getTrainInfo() {
+    setLoadingEdit(true);
     getTrainingById(idUser, idTraining).then((res) => {
-      console.log(res.data, 'Info dos treinos');
+      setTrainName(res.data.nomeTreino);
+      setNumberSets(res.data.numeroSeries.toString());
+      setTrainNameError('');
+      setNumberSetsError('');
+      setExerciseList(res.data.exercicioJson.exerciseList);
+      setLoadingEdit(false);
     });
   }
 
@@ -72,13 +91,23 @@ export function CreateTrainingScreen() {
       .catch((err) => {
         if (err?.response.data?.nomeTreino)
           setModalError('Um treino com este nome já existe!');
-        else
+        else {
+          console.log(err.response.data);
           setModalError(
             'Ocorreu um erro ao tentar criar o seu treino, tente novamente mais tarde!'
           );
+        }
         modalFailRef.current.openModal();
         setButtonLoading(false);
       });
+  }
+
+  function _editTraining(dto) {
+    setButtonLoading(true);
+    updateTrainingById(dto).then((res) => {
+      modalSuccessref.current.openModal();
+      setButtonLoading(false);
+    });
   }
 
   function onCloseModal() {
@@ -90,6 +119,11 @@ export function CreateTrainingScreen() {
     setTrainName(value);
   }
 
+  function onChangeSet(value) {
+    setNumberSetsError('');
+    setNumberSets(value);
+  }
+
   function onBlurName() {
     if (trainName) {
       setTrainNameError('');
@@ -98,62 +132,94 @@ export function CreateTrainingScreen() {
     setTrainNameError('*O nome do treino não pode estar vazio!');
   }
 
-  function onAddPress() {
-    const exercise = {
-      numeroRepeticoes: repNumber,
-      nomeExercicio: selectedItem.nomeExercicio
-        ? selectedItem.nomeExercicio
-        : selectedItem,
-    };
+  function onBlurNumberSets() {
+    let varNumber = parseInt(numberSets);
+    if (numberSets) {
+      if (isNaN(varNumber) || varNumber <= 0) {
+        setNumberSetsError('*Número de séries inválido!');
+        return;
+      } else setNumberSetsError('');
+    } else setNumberSetsError('*O número de séries não pode estar vazio!');
+  }
 
-    setExerciseList([...exerciseList, exercise]);
-    setRepNumber(1);
+  // function onAddPress() {
+  //   const exercise = {
+  //     numeroRepeticoes: repNumber,
+  //     nomeExercicio: selectedItem.nomeExercicio
+  //       ? selectedItem.nomeExercicio
+  //       : selectedItem,
+  //   };
+
+  //   setExerciseList([...exerciseList, exercise]);
+  //   setRepNumber(1);
+  // }
+
+  function onExercisePress(item) {
+    navigation.navigate('SelectExerciseScreen', {
+      exercise: item,
+      trainTypeId,
+      trainTypeName,
+      idTraining,
+      isEdit,
+    });
   }
 
   function onNext() {
-    if (trainNameError === '') {
+    if (trainNameError === '' && numberSetsError === '') {
       setIsNext(true);
     } else {
       onBlurName();
+      onBlurNumberSets();
     }
   }
   function onFinishCreating() {
-    const exercicio = {
-      exerciseList,
-    };
+    if (exerciseList.length > 0) {
+      const dto = {
+        nomeTreino: trainName,
+        numeroSeries: parseInt(numberSets),
+        tipoTreino: trainTypeId,
+        usuarioId: idUser,
+        exercicioJson: exerciseList,
+      };
 
-    const dto = {
-      nomeTreino: trainName,
-      numeroSeries: setNumberSets,
-      tipoTreino: trainTypeId,
-      usuarioId: idUser,
-      exercicioJson: exercicio,
-    };
-
-    _createTraining(dto);
+      _createTraining(dto);
+    } else {
+      setModalError('Selecione ao menos 3 exercicíos da lista.');
+      modalFailRef.current.openModal();
+    }
   }
 
-  function onRemoveItem(index) {
-    var temporaryList = exerciseList;
-    temporaryList = temporaryList.filter((item, pos) => {
-      return pos !== index;
-    });
-    setExerciseList(temporaryList);
-  }
+  // function onRemoveItem(index) {
+  //   var temporaryList = exerciseList;
+  //   temporaryList = temporaryList.filter((item, pos) => {
+  //     return pos !== index;
+  //   });
+  //   setExerciseList(temporaryList);
+  // }
 
   function renderItem({ item, index }) {
     return (
+      <AvaliableExercise
+        onPress={() => onExercisePress(item)}
+        exerciseName={item.nomeExercicio}
+        image={item.image}
+      />
+    );
+  }
+
+  function renderSelected({ item, index }) {
+    return (
       <ExerciseItem
         exerciseName={item.nomeExercicio}
-        exerciseRep={item.numeroRepeticoes}
-        onRemoveItem={() => onRemoveItem(index)}
+        exerciseRep={item.repeticoes}
+        key={`${item.id} - ${index}`}
       />
     );
   }
 
   return (
     <>
-      {loading ? (
+      {loading || loadingEdit ? (
         <Loading />
       ) : (
         <Container>
@@ -179,92 +245,61 @@ export function CreateTrainingScreen() {
           />
           <View style={{ marginTop: 40 }}>
             {!isNext ? (
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ flex: 1 }}>
-                  <Input
-                    customTheme={'primary'}
-                    label={'Nome do treino'}
-                    onChangeText={(value) => onChangeName(value)}
-                    onBlur={() => onBlurName()}
-                    error={trainNameError}
-                    value={trainName}
-                  />
-                </View>
-
-                <View style={{ flex: 1 }}>
-                  <Picker
-                    selectedValue={setNumberSets}
-                    onValueChange={(itemValue) => setSetNumberSets(itemValue)}
-                  >
-                    {[...Array(3)].map((item, index) => {
-                      var number = index + 1;
-                      return (
-                        <Picker.Item
-                          style={{ flex: 1 }}
-                          label={number.toString()}
-                          value={index}
-                        />
-                      );
-                    })}
-                  </Picker>
-                </View>
+              <View>
+                <Input
+                  customTheme={'primary'}
+                  label={'Nome do treino'}
+                  onChangeText={(value) => onChangeName(value)}
+                  onBlur={() => onBlurName()}
+                  error={trainNameError}
+                  value={trainName}
+                />
+                <Input
+                  customTheme={'primary'}
+                  label={'Número de séries'}
+                  keyboardType="numeric"
+                  onChangeText={(value) => onChangeSet(value)}
+                  onBlur={() => onBlurNumberSets()}
+                  value={numberSets}
+                  error={numberSetsError}
+                  maxLength={1}
+                />
               </View>
             ) : (
               <>
-                <Row>
-                  <Column>
-                    <Picker
-                      selectedValue={
-                        selectedItem.length == 0
-                          ? avaliabeExercise[0].nomeExercicio
-                          : selectedItem
-                      }
-                      onValueChange={(itemValue) => setSelectedItem(itemValue)}
-                    >
-                      {avaliabeExercise.map((item, index) => (
-                        <Picker.Item
-                          label={item.nomeExercicio}
-                          value={item.nomeExercicio}
-                          key={index}
-                        />
-                      ))}
-                    </Picker>
-                  </Column>
-                  <Column>
-                    <Picker
-                      selectedValue={repNumber}
-                      onValueChange={(itemValue) => setRepNumber(itemValue)}
-                    >
-                      {[...Array(70)].map((item, index) => {
-                        var number = index + 1;
-                        return (
-                          <Picker.Item
-                            label={number.toString()}
-                            value={number}
-                            key={number}
-                          />
-                        );
-                      })}
-                    </Picker>
-                  </Column>
-                  <RoundButton onPress={onAddPress} />
-                </Row>
-
-                <FlatList
-                  style={{ height: '70%' }}
-                  data={exerciseList}
-                  renderItem={renderItem}
-                  showsVerticalScrollIndicator={false}
-                />
+                {!isViewSelected ? (
+                  <FlatList
+                    style={{ height: '70%' }}
+                    data={avaliabeExercise}
+                    renderItem={renderItem}
+                    showsVerticalScrollIndicator={false}
+                  />
+                ) : (
+                  <FlatList
+                    style={{ height: '70%' }}
+                    data={exerciseList}
+                    renderItem={renderSelected}
+                    showsVerticalScrollIndicator={false}
+                  />
+                )}
               </>
             )}
           </View>
           <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+            {isNext && (
+              <Button
+                title={
+                  !isViewSelected
+                    ? 'Treinos selecionados'
+                    : 'Selecionar Treinos'
+                }
+                onPress={() => setIsViewSelected(!isViewSelected)}
+              />
+            )}
             <Button
               title={!isNext ? 'Continuar' : 'Finalizar'}
               loading={buttonLoading}
               onPress={() => (!isNext ? onNext() : onFinishCreating())}
-              disabled={!isNext ? false : exerciseList.length <= 0}
             />
           </View>
         </Container>

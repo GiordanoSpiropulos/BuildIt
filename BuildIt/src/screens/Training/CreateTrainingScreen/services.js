@@ -12,3 +12,7 @@ export function createTraining(dto) {
 export function getTrainingById(userId, trainId) {
   return api.get(`${API_ROUTES.TRAINING}${userId}/${trainId}/`);
 }
+
+export function updateTrainingById(dto) {
+  return api.put(`${API_ROUTES.TRAINING}`, dto);
+}
