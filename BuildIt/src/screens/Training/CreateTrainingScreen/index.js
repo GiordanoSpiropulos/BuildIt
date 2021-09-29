@@ -35,10 +35,10 @@ export function CreateTrainingScreen() {
 
   const [avaliabeExercise, setAvaliableExercise] = useState([]);
 
-  const [numberSets, setNumberSets] = useState('10');
+  const [numberSets, setNumberSets] = useState('');
   const [numberSetsError, setNumberSetsError] = useState(null);
 
-  const [trainName, setTrainName] = useState('AAA');
+  const [trainName, setTrainName] = useState('');
   const [trainNameError, setTrainNameError] = useState(null);
 
   const [exerciseList, setExerciseList] = useState([]);
@@ -142,18 +142,6 @@ export function CreateTrainingScreen() {
     } else setNumberSetsError('*O número de séries não pode estar vazio!');
   }
 
-  // function onAddPress() {
-  //   const exercise = {
-  //     numeroRepeticoes: repNumber,
-  //     nomeExercicio: selectedItem.nomeExercicio
-  //       ? selectedItem.nomeExercicio
-  //       : selectedItem,
-  //   };
-
-  //   setExerciseList([...exerciseList, exercise]);
-  //   setRepNumber(1);
-  // }
-
   function onExercisePress(item) {
     navigation.navigate('SelectExerciseScreen', {
       exercise: item,
@@ -189,13 +177,13 @@ export function CreateTrainingScreen() {
     }
   }
 
-  // function onRemoveItem(index) {
-  //   var temporaryList = exerciseList;
-  //   temporaryList = temporaryList.filter((item, pos) => {
-  //     return pos !== index;
-  //   });
-  //   setExerciseList(temporaryList);
-  // }
+  function onRemoveItem(index) {
+    var temporaryList = exerciseList;
+    temporaryList = temporaryList.filter((item, pos) => {
+      return pos !== index;
+    });
+    setExerciseList(temporaryList);
+  }
 
   function renderItem({ item, index }) {
     return (
@@ -203,6 +191,7 @@ export function CreateTrainingScreen() {
         onPress={() => onExercisePress(item)}
         exerciseName={item.nomeExercicio}
         image={item.image}
+        key={`${item.id} - ${index}`}
       />
     );
   }
@@ -212,6 +201,7 @@ export function CreateTrainingScreen() {
       <ExerciseItem
         exerciseName={item.nomeExercicio}
         exerciseRep={item.repeticoes}
+        onRemoveItem={() => onRemoveItem(index)}
         key={`${item.id} - ${index}`}
       />
     );
