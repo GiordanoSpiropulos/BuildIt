@@ -23,3 +23,7 @@ export const TextContainer = styled.View`
 export const ExerciseName = styled.Text`
   font-family: ${fonts.semibold};
 `;
+
+export const RepNumber = styled.Text`
+  font-size: 13px;
+`;

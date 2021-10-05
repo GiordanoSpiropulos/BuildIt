@@ -46,6 +46,7 @@ export function CreateTrainingScreen() {
   const [isNext, setIsNext] = useState(false);
   const [isViewSelected, setIsViewSelected] = useState(false);
   const [modalError, setModalError] = useState('');
+  const [modalSuccess, setModalSuccess] = useState('');
 
   const modalSuccessref = useRef();
   const modalFailRef = useRef();
@@ -74,9 +75,9 @@ export function CreateTrainingScreen() {
     getTrainingById(idUser, idTraining).then((res) => {
       setTrainName(res.data.nomeTreino);
       setNumberSets(res.data.numeroSeries.toString());
+      setExerciseList(res.data.exercicioJson);
       setTrainNameError('');
       setNumberSetsError('');
-      setExerciseList(res.data.exercicioJson.exerciseList);
       setLoadingEdit(false);
     });
   }
@@ -85,6 +86,7 @@ export function CreateTrainingScreen() {
     setButtonLoading(true);
     createTraining(dto)
       .then((res) => {
+        setModalSuccess('Treino criado com sucesso!');
         modalSuccessref.current.openModal();
         setButtonLoading(false);
       })
@@ -104,10 +106,19 @@ export function CreateTrainingScreen() {
 
   function _editTraining(dto) {
     setButtonLoading(true);
-    updateTrainingById(dto).then((res) => {
-      modalSuccessref.current.openModal();
-      setButtonLoading(false);
-    });
+    updateTrainingById(idUser, idTraining, dto)
+      .then((res) => {
+        setModalSuccess('Treino editado com sucesso!');
+        modalSuccessref.current.openModal();
+        setButtonLoading(false);
+      })
+      .catch((err) => {
+        setModalError(
+          'Ocorreu um erro ao editar seu treino, tente novamente mais tarde!'
+        );
+        modalFailRef.current.openModal();
+        setButtonLoading(false);
+      });
   }
 
   function onCloseModal() {
@@ -169,8 +180,8 @@ export function CreateTrainingScreen() {
         usuarioId: idUser,
         exercicioJson: exerciseList,
       };
-
-      _createTraining(dto);
+      if (isEdit) _editTraining(dto);
+      else _createTraining(dto);
     } else {
       setModalError('Selecione ao menos 3 exercicíos da lista.');
       modalFailRef.current.openModal();
@@ -217,7 +228,7 @@ export function CreateTrainingScreen() {
             ref={modalSuccessref}
             type={'success'}
             title={'Sucesso!'}
-            text={'Treino criado com sucesso!'}
+            text={modalSuccess}
             onCustomClose={onCloseModal}
           />
           <AlertModal

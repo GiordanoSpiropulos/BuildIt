@@ -24,3 +24,6 @@ export * from './Modal/BaseModal';
 export * from './Modal/AlertModal';
 
 export * from './Loading';
+
+export * from './CountDown';
+export * from './Timer';

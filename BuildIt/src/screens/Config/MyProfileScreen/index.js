@@ -8,7 +8,6 @@ import { ItemContainer, ItemText } from './styles';
 export function MyProfileScreen() {
   const navigation = useNavigation();
   const trainRef = useRef();
-  const dietRef = useRef();
   const changeDataRef = useRef();
 
   const buttonTrain = [
@@ -18,12 +17,6 @@ export function MyProfileScreen() {
     },
   ];
 
-  const buttonDiet = [
-    {
-      title: 'Excluir',
-      onPress: () => console.log('Excluir'),
-    },
-  ];
   return (
     <Container>
       <AlertModal
@@ -32,13 +25,6 @@ export function MyProfileScreen() {
         text={'Os dados excluídos poderão ser recuperados dentre 30 dias.'}
         ref={trainRef}
         buttons={buttonTrain}
-      />
-      <AlertModal
-        type={'warning'}
-        title={'Excluir dietas'}
-        text={'Os dados excluídos poderão ser recuperados dentre 30 dias.'}
-        ref={dietRef}
-        buttons={buttonDiet}
       />
 
       <Header
@@ -53,12 +39,6 @@ export function MyProfileScreen() {
           type={'mc'}
           iconName={'arm-flex'}
           onPress={() => trainRef.current.openModal()}
-        />
-        <ConfigItem
-          menuText={'Excluir dietas criadas'}
-          type={'mc'}
-          iconName={'food-apple'}
-          onPress={() => dietRef.current.openModal()}
         />
         <ConfigItem
           menuText={'Editar dados cadastrais'}

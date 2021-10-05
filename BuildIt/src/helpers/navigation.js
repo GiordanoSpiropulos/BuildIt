@@ -2,6 +2,7 @@ const routeTrainingNavigation = [
   'ExerciseScreen',
   'CreateTrainingScreen',
   'SelectExerciseScreen',
+  'InProgressTrainingScreen',
 ];
 
 const routeConfigNavigation = [

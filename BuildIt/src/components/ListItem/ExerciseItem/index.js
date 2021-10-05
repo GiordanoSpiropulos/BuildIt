@@ -13,16 +13,6 @@ import {
 export function ExerciseItem({ exerciseName, exerciseRep, onRemoveItem }) {
   return (
     <ItemContainer>
-      <IconContainer>
-        <TouchableNativeFeedback
-          background={TouchableNativeFeedback.Ripple('grey', true)}
-        >
-          <RoundButtonContainer>
-            <Icon name="bars" size={25} />
-          </RoundButtonContainer>
-        </TouchableNativeFeedback>
-      </IconContainer>
-
       <TextContainer>
         <ExerciseText>{exerciseName.toUpperCase()}</ExerciseText>
         <RepText>x {exerciseRep}</RepText>

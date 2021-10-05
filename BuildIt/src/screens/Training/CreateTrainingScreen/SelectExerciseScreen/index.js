@@ -37,7 +37,7 @@ export function SelectExerciseScreen() {
             id: exercise.id,
             nomeExercicio: exercise.nomeExercicio,
             image: exercise.image,
-
+            descricao: exercise.descricao,
             repeticoes: repNumber,
           },
         },

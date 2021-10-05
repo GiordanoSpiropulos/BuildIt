@@ -28,15 +28,6 @@ export default function BottomNavigation() {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="Dieta"
-        component={TrainingNavigation}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Icon name="home" color={color} size={30} />
-          ),
-        }}
-      /> */}
       <Tab.Screen
         name="Opções"
         component={ConfigNavigation}
