@@ -10,7 +10,7 @@ import {
   Header,
   Loading,
 } from '../../../components';
-import { getTrainingById } from '../CreateTrainingScreen/services';
+import { getTrainingById } from '../../../services/Training/services';
 import { Title } from './styles';
 
 export function ExerciseScreen() {
@@ -30,7 +30,7 @@ export function ExerciseScreen() {
   }, []);
 
   function _getTrainingById() {
-    getTrainingById(idUser, trainingId).then((res) => {
+    getTrainingById(trainingId).then((res) => {
       setExerciseList(res.data.exercicioJson);
       setSetsNumber(res.data.numeroSeries);
       setLoading(false);
@@ -75,6 +75,8 @@ export function ExerciseScreen() {
                 navigation.navigate('InProgressTrainingScreen', {
                   exerciseList,
                   setsNumber,
+                  trainingId,
+                  trainingName,
                 })
               }
             />

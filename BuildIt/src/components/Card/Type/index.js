@@ -11,7 +11,6 @@ export function TypeCard({
   type,
   title,
   minDuration,
-  maxDuration,
   onPress,
   onLongPress,
   source,
@@ -26,8 +25,8 @@ export function TypeCard({
               <Title>{title}</Title>
               {type == 'workout' && (
                 <>
-                  {minDuration && maxDuration && (
-                    <DurationText>{`${minDuration}min - ${maxDuration}min`}</DurationText>
+                  {minDuration && (
+                    <DurationText>{`${minDuration}`}</DurationText>
                   )}
                 </>
               )}

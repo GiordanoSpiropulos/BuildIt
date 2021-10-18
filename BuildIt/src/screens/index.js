@@ -7,6 +7,8 @@ export * from './Training/StrengthScreen';
 
 export * from './Training/ExerciseScreen';
 export * from './Training/ExerciseScreen/InProgressTrainingScreen';
+export * from './Training/ExerciseScreen/FinishExerciseScreen';
+
 export * from './Training/CreateTrainingScreen';
 export * from './Training/CreateTrainingScreen/SelectExerciseScreen';
 

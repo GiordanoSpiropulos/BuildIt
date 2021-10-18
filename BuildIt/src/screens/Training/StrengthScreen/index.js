@@ -11,7 +11,7 @@ import {
 import { trainType } from '../../../helpers/enum/trainType.enum';
 import { colors } from '../../../styles';
 import { Title, ListContainer } from './styles';
-import { deleteTrainingById, getTraningsByUserId } from './services';
+import { deleteTrainingById, getTraningsByUserId } from '../../../services';
 import { useSelector } from 'react-redux';
 import AlertModal from '../../../components/Modal/AlertModal';
 
@@ -75,7 +75,7 @@ export function StrengthScreen() {
   function _deleteTraining() {
     setLoading(true);
     modalRef.current.closeModal();
-    deleteTrainingById(idUser, idSelected).then((res) => {
+    deleteTrainingById(idSelected).then((res) => {
       switch (trainTypeSelected) {
         case trainType.Peito:
           let newChestWorkout = chestWorkout.filter((x) => x.id != idSelected);
@@ -143,7 +143,6 @@ export function StrengthScreen() {
         type={'workout'}
         title={item.nomeTreino}
         minDuration={item.tempoMinDuracao}
-        maxDuration={item.tempoMaxDuracao}
         onPress={() => onPressTrain(item.id, item.nomeTreino)}
         onLongPress={() => onLongPress(item.id, item.tipoTreino)}
       />

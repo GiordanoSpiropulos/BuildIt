@@ -10,16 +10,19 @@ import { ImageContainer, RepText, Title } from './styles';
 export function InProgressTrainingScreen() {
   const route = useRoute();
   const navigation = useNavigation();
+
+  const trainingId = route.params.trainingId;
   const totalSetsNumber = route.params.setsNumber;
-  const idUser = useSelector((state) => state.auth.id);
+  const trainingName = route.params.trainingName;
 
   const [exerciseList] = useState(route.params.exerciseList);
   const [exerciseCount, setExerciseCount] = useState(0);
-  const [setsCount, setSetsCount] = useState(0);
+  const [setsCount, setSetsCount] = useState(1);
   const [isInBreak, setIsInBreak] = useState(false);
   const [count, setCount] = useState(0);
 
   const breakTimeRef = useRef();
+  const timerRef = useRef();
 
   useEffect(() => {
     if (isInBreak) {
@@ -50,7 +53,6 @@ export function InProgressTrainingScreen() {
     // return () => backHandler.remove();
   }, []);
 
-  function checkNext() {}
   function onPressNext() {
     if (exerciseList[exerciseCount + 1]) {
       setExerciseCount(exerciseCount + 1);
@@ -62,7 +64,16 @@ export function InProgressTrainingScreen() {
         setExerciseCount(0);
         setCount(30);
         setIsInBreak(true);
-      } else console.log('Treino Finalizado!');
+      } else {
+        navigation.navigate('FinishExerciseScreen', {
+          trainingId,
+          trainingName,
+          time: timerRef.current.getTime(),
+          sets: totalSetsNumber,
+          exercises: exerciseList,
+        });
+        setIsInBreak(true);
+      }
     }
   }
 
@@ -73,7 +84,7 @@ export function InProgressTrainingScreen() {
           title={exerciseList[exerciseCount].nomeExercicio}
           color={'black'}
         />
-        <Timer paused={isInBreak} />
+        <Timer ref={timerRef} paused={isInBreak} />
         {!isInBreak ? (
           <>
             <ImageContainer>

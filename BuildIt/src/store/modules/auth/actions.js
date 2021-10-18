@@ -6,10 +6,10 @@ export function loginRequest(email, password) {
     payload: { email, password },
   };
 }
-export function loginSuccess(token, refresh, id) {
+export function loginSuccess(token, refresh, id, username) {
   return {
     type: ACTION_TYPES.LOGIN_SUCCESS,
-    payload: { token, refresh, id },
+    payload: { token, refresh, id, username },
   };
 }
 

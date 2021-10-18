@@ -19,8 +19,7 @@ const Timer = (props, ref) => {
     getTime: () => {
       return `${hrs.toString().padStart(2, '0')}:${mins
         .toString()
-        .padStart(2, '0')}:
-      ${secs.toString().padStart(2, '0')}`;
+        .padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     },
   }));
 

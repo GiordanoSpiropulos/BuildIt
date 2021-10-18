@@ -4,6 +4,7 @@ import {
   CategoryScreen,
   CreateTrainingScreen,
   ExerciseScreen,
+  FinishExerciseScreen,
   InProgressTrainingScreen,
   SelectExerciseScreen,
   StrengthScreen,
@@ -44,6 +45,10 @@ export default function TrainingNavigation({ navigation, route }) {
       <Training.Screen
         name="SelectExerciseScreen"
         component={SelectExerciseScreen}
+      />
+      <Training.Screen
+        name="FinishExerciseScreen"
+        component={FinishExerciseScreen}
       />
     </Training.Navigator>
   );

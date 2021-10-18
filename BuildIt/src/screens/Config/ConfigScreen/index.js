@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, StackActions } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
 import { View, Text } from 'react-native';
 import { ConfigItem, Container, Header } from '../../../components';
@@ -13,12 +13,13 @@ import {
 } from './styles';
 import AlertModal from '../../../components/Modal/AlertModal';
 import { colors } from '../../../styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../../../store/modules/auth/actions';
 
 export function ConfigScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const username = useSelector((state) => state.auth.username);
   const [userImage, setUserImage] = useState('');
   const buttons = [
     {
@@ -34,6 +35,7 @@ export function ConfigScreen() {
   }
 
   function logout() {
+    navigation.dispatch(StackActions.popToTop());
     dispatch(signOut());
     modalRef.current.closeModal();
   }
@@ -55,7 +57,7 @@ export function ConfigScreen() {
             <Icon name="user" size={70} />
           )}
         </InnerPerfil>
-        <UserNameText>Nome do usuário</UserNameText>
+        <UserNameText>{username}</UserNameText>
       </PerfilImageContainer>
       <ConfigItem
         menuText={'Meu perfil'}

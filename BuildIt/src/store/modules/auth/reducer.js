@@ -8,6 +8,7 @@ const INITIAL_STATE = {
   token: '',
   refreshToken: '',
   id: 0,
+  username: '',
 };
 
 export default function auth(state = INITIAL_STATE, action) {
@@ -23,6 +24,7 @@ export default function auth(state = INITIAL_STATE, action) {
         draft.token = payload.token;
         draft.refreshToken = payload.refreshToken;
         draft.id = payload.id;
+        draft.username = payload.username;
         break;
       case ACTION_TYPES.LOGIN_FAILED:
         draft.loading = false;
@@ -38,6 +40,7 @@ export default function auth(state = INITIAL_STATE, action) {
         draft.token = '';
         draft.refreshToken = '';
         draft.id = 0;
+        draft.username = '';
         break;
     }
   });

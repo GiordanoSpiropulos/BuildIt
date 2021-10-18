@@ -13,10 +13,10 @@ import { FlatList, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import {
   createTraining,
-  getExerciseList,
+  getExerciseListByType,
   getTrainingById,
   updateTrainingById,
-} from './services';
+} from '../../../services';
 import AlertModal from '../../../components/Modal/AlertModal';
 export function CreateTrainingScreen() {
   const route = useRoute();
@@ -64,7 +64,7 @@ export function CreateTrainingScreen() {
   }, [route.params?.exercise]);
 
   function _getExerciseList() {
-    getExerciseList().then((res) => {
+    getExerciseListByType(trainTypeId).then((res) => {
       setAvaliableExercise(res.data);
       setLoading(false);
     });
@@ -72,7 +72,7 @@ export function CreateTrainingScreen() {
 
   function _getTrainInfo() {
     setLoadingEdit(true);
-    getTrainingById(idUser, idTraining).then((res) => {
+    getTrainingById(idTraining).then((res) => {
       setTrainName(res.data.nomeTreino);
       setNumberSets(res.data.numeroSeries.toString());
       setExerciseList(res.data.exercicioJson);
@@ -106,7 +106,7 @@ export function CreateTrainingScreen() {
 
   function _editTraining(dto) {
     setButtonLoading(true);
-    updateTrainingById(idUser, idTraining, dto)
+    updateTrainingById(idTraining, dto)
       .then((res) => {
         setModalSuccess('Treino editado com sucesso!');
         modalSuccessref.current.openModal();
