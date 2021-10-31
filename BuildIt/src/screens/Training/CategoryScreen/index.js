@@ -32,7 +32,7 @@ export function CategoryScreen() {
           source={StrengthCategory}
           onPress={onClickForca}
         />
-        <CategoryCard
+        {/* <CategoryCard
           title={'Corrida'}
           source={RunningCategory}
           onPress={onClickCorrida}
@@ -41,7 +41,7 @@ export function CategoryScreen() {
           title={'Resistência'}
           source={ResistanceCategory}
           onPress={onClickResistencia}
-        />
+        /> */}
       </Container>
     </ScrollView>
   );
