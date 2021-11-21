@@ -22,7 +22,7 @@ export default function auth(state = INITIAL_STATE, action) {
         draft.loading = false;
         draft.isSigned = true;
         draft.token = payload.token;
-        draft.refreshToken = payload.refreshToken;
+        draft.refreshToken = payload.refresh;
         draft.id = payload.id;
         draft.username = payload.username;
         break;
@@ -41,6 +41,9 @@ export default function auth(state = INITIAL_STATE, action) {
         draft.refreshToken = '';
         draft.id = 0;
         draft.username = '';
+        break;
+      case ACTION_TYPES.SET_TOKEN:
+        draft.token = payload.token;
         break;
     }
   });

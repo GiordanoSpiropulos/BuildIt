@@ -1,7 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/core';
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Image, ScrollView, BackHandler } from 'react-native';
-import { useSelector } from 'react-redux';
 import { Button, Container, Header } from '../../../../components';
 import CountDown from '../../../../components/CountDown';
 import Timer from '../../../../components/Timer';
@@ -43,14 +42,14 @@ export function InProgressTrainingScreen() {
   }, [isInBreak]);
 
   useEffect(() => {
-    // const backAction = () => {
-    //   return true;
-    // };
-    // const backHandler = BackHandler.addEventListener(
-    //   'hardwareBackPress',
-    //   backAction
-    // );
-    // return () => backHandler.remove();
+    const backAction = () => {
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+    return () => backHandler.remove();
   }, []);
 
   function onPressNext() {

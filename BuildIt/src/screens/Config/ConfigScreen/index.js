@@ -1,8 +1,6 @@
 import { useNavigation, StackActions } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
-import { View, Text } from 'react-native';
 import { ConfigItem, Container, Header } from '../../../components';
-import { InitialScreenBackGround } from '../../../assets';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {
   InnerImageContainer,
@@ -63,6 +61,11 @@ export function ConfigScreen() {
         menuText={'Meu perfil'}
         iconName="user"
         onPress={() => navigation.navigate('MyProfileScreen')}
+      />
+      <ConfigItem
+        menuText="Sobre o aplicativo"
+        iconName="info"
+        onPress={() => navigation.navigate('AboutScreen')}
       />
       <ConfigItem
         menuText={'Logout'}

@@ -8,6 +8,7 @@ import {
   ChangeRegisterScreen,
   PasswordScreen,
 } from '../screens';
+import { AboutScreen } from '../screens/Config/AboutScreen';
 
 import { tabBarStyle } from '../styles';
 
@@ -36,6 +37,7 @@ export default function ConfigNavigation({ navigation, route }) {
         name={'ChangeRegisterScreen'}
       />
       <Config.Screen component={PasswordScreen} name={'PasswordScreen'} />
+      <Config.Screen component={AboutScreen} name={'AboutScreen'} />
     </Config.Navigator>
   );
 }

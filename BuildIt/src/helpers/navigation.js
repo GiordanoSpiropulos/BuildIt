@@ -10,6 +10,7 @@ const routeConfigNavigation = [
   'MyProfileScreen',
   'ChangeRegisterScreen',
   'PasswordScreen',
+  'AboutScreen',
 ];
 
 let routeNames = [];

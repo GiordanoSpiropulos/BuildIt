@@ -1,8 +1,11 @@
 import axios from 'axios';
-import { store } from '../store/index';
-import { loginRequest } from '../store/modules/auth/actions';
+import { Alert } from 'react-native';
+import { store } from '../store';
+import { setToken, signOut } from '../store/modules/auth/actions';
+import { API_ROUTES } from './apiRoutes';
 
-export const URL_API = 'http://127.0.0.1:8000';
+//export const URL_API = 'http://127.0.0.1:8000';
+export const URL_API = 'https://buildit-giordano.herokuapp.com';
 
 const api = axios.create({
   baseURL: URL_API,
@@ -11,28 +14,26 @@ const api = axios.create({
   },
 });
 
-// if (interceptor) {
-//   instance.interceptors.response.use(
-//     (response) => {
-//       if (Array.isArray(response.data)) {
-//         var json = response.data[1];
-//         if (json.codeResultHttp == 401) {
-//           store.dispatch(
-//             loginRequest(state.auth.user.username, state.auth.password)
-//           );
-//         }
-//       } else {
-//         var json = JSON.stringify(response.data);
-//         if (json.codeResultHttp == 401) {
-//           store.dispatch(
-//             signInRequest(state.auth.user.username, state.auth.password)
-//           );
-//         }
-//       }
+const interceptor = api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status != 401) return Promise.reject(error);
+    api.interceptors.request.eject(interceptor);
+    const refreshToken = store.getState().auth.refreshToken;
 
-//       return response;
-//     },
-//   );
-// }
+    return api
+      .post(`${API_ROUTES.REFRESH_TOKEN}`, { refresh: refreshToken })
+      .then((res) => {
+        store.dispatch(setToken(res.data));
+        error.response.config.headers.Authorization = `Bearer ${res.data}`;
+        return axios(error.response.config);
+      })
+      .catch((err) => {
+        store.dispatch(signOut());
+        Alert.alert('Deslogado', 'Sua sessão expirou!');
+        return Promise.reject(error);
+      });
+  }
+);
 
 export default api;

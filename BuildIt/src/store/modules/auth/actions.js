@@ -1,5 +1,12 @@
 import { ACTION_TYPES } from './actionTypes';
 
+export function setToken(token) {
+  return {
+    type: ACTION_TYPES.SET_TOKEN,
+    payload: { token },
+  };
+}
+
 export function loginRequest(email, password) {
   return {
     type: ACTION_TYPES.LOGIN_REQUEST,
